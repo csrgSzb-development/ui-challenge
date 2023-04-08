@@ -1,0 +1,68 @@
+<section class="card shadow">
+  <div class="card-body">
+    <h5 class="card-title text-primary">User Registration</h5>
+    <hr />
+    <p class="card-text">
+      To registrate your new user account, please fill this form.
+    </p>
+    <form [formGroup]="userSignUpForm" (ngSubmit)="saveUser()" novalidate>
+      <div *ngIf="username" class="form-floating mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          formControlName="username"
+          placeholder="name@example.com"
+        />
+        <label for="username">Username</label>
+        <div *ngIf="username.invalid && username.touched"
+          class="small text-danger">
+          <span *ngIf="username.errors?.['required']">You must add a username!</span>
+          <span *ngIf="username.errors?.['minlength']">The username must be at least 4 characters!</span>
+          <span *ngIf="username.errors?.['maxlength']">The username must be maximum 10 characters!</span>
+        </div>
+      </div>
+      <div *ngIf="email" class="form-floating mb-3">
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          formControlName="email"
+          placeholder="name@example.com"
+        />
+        <label for="email">E-mail address</label>
+        <div *ngIf="email.invalid && email.touched" class="small text-danger">
+          <span *ngIf="email.errors?.['required']">Please add your e-mail!</span>
+          <span *ngIf="email.errors?.['email']">Invalid e-mail address!</span>
+        </div>
+      </div>
+      <div *ngIf="password" class="form-floating">
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          formControlName="password"
+          placeholder="Password"
+        />
+        <label for="password">Password</label>
+        <div
+          *ngIf="password.invalid && password.touched"
+          class="small text-danger"
+        >
+          <span *ngIf="password.errors?.['required']">Please type your password!</span>
+          <span *ngIf="password.errors?.['minlength']">The password must be at least 6 characters!</span>
+          <span *ngIf="password.errors?.['maxlength']">The password must be maximum 10 characters!</span>
+        </div>
+      </div>
+      <!-- Submit SignUp Button-->
+      <div class="text-center mt-3">
+        <button
+          class="btn btn-warning mt-2"
+          id="submitSignUpButton"
+          type="submit"
+          [disabled]="userSignUpForm.invalid"
+        ><i class="fa fa-user me-1"></i>Registrate</button>
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,34 @@
+<section class="card shadow">
+  <div class="card-body">
+    <h5 class="card-title text-primary">Log in</h5>
+    <hr>
+    <form [formGroup]="loginForm" (ngSubmit)="loginUser()" novalidate>
+      <div *ngIf="email" class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" formControlName="email"
+          placeholder="name@example.com">
+        <label for="email">E-mail</label>
+        <div *ngIf="email.invalid && email.touched" class="small text-danger">
+          <span *ngIf="email.errors?.['required']">Please add your e-mail address!</span>
+          <span *ngIf="email.errors?.['email']">Invalid e-mail address!</span>
+        </div>
+      </div>
+      <div *ngIf="password" class="form-floating">
+        <input type="password" class="form-control" id="password" formControlName="password"
+          placeholder="Password">
+        <label for="password">Password</label>
+        <div *ngIf="password.invalid && password.touched" class="small text-danger">
+          <span *ngIf="password.errors?.['required']">Please type your password!</span>
+          <span *ngIf="password.errors?.['minlength']">The password must be at least 6 characters!</span>
+          <span *ngIf="password.errors?.['maxlength']">The password must be maximum 10 characters!</span>
+        </div>
+      </div>
+
+      <!-- Submit LogIn Button-->
+      <div class="text-center mt-3">
+        <button class="btn btn-success mt-2" id="submitLoginButton" type="submit"
+          [disabled]="loginForm.invalid"><i class="me-1"></i>Log In</button>
+      </div>
+
+    </form>
+  </div>
+</section>
