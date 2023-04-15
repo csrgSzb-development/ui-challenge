@@ -31,7 +31,7 @@ export class UserService {
   };
 
   updateUserInfo(userUpdateData: UpdateUser): Observable<UserRO> {
-    return this.http.put<UserRO>(this.USERS_BASE_URL, userUpdateData);
+    return this.http.put<UserRO>(this.USER_BASE_URL, userUpdateData);
   };
 
   getAllUsers(): Observable<UserData[]> {

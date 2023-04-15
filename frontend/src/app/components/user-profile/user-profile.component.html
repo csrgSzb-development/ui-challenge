@@ -1,0 +1,109 @@
+<section class="card shadow">
+  <div class="card-body">
+    <h5 class="card-title text-primary">My Profile</h5>
+    <hr />
+    <p class="card-text">
+      To edit and update your profile, click on the Edit button below.
+    </p>
+    <form [formGroup]="userUpdateForm" (ngSubmit)="updateUser()" novalidate>
+      <fieldset [disabled]="!editMode">
+        <!-- username input -->
+        <div *ngIf="username" class="mb-3">
+          <label for="username" class="form-label">Username:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            formControlName="username"
+            placeholder="Add your username..."
+          />
+          <div *ngIf="username.invalid && username.touched" class="small text-danger">
+            <span *ngIf="username.errors?.['required']">You must add a username!</span>
+            <span *ngIf="username.errors?.['minlength']">The username must be at least 4 characters!</span>
+            <span *ngIf="username.errors?.['maxlength']">The username must be maximum 10 characters!</span>
+          </div>
+        </div>
+        <!-- email input -->
+        <div *ngIf="email" class="mb-3">
+          <label for="email" class="form-label">E-mail:</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            formControlName="email"
+            placeholder="name@example.com"
+          />
+          <div *ngIf="email.invalid && email.touched" class="small text-danger">
+            <span *ngIf="email.errors?.['required']">Please add your e-mail!</span>
+            <span *ngIf="email.errors?.['email']">Invalid e-mail address!</span>
+          </div>
+        </div>
+         <!-- image input & display -->
+         <div class="row">
+          <!-- image input -->
+          <div *ngIf="image" class="mb-3 col-12 col-md-8">
+            <label for="image" class="form-label">Image:</label>
+            <input
+            type="text"
+              class="form-control"
+              id="image"
+              formControlName="image"
+              placeholder="Add your image url..."
+              aria-describedby="imageHelp"
+            />
+            <div id="imageHelp" class="form-text">You can add here an image url, which starts with <em>http(s)://</em>, and ends with <em>.jp(e)g</em>.</div>
+            <div *ngIf="image.dirty" class="small text-danger">
+              <span *ngIf="image.errors?.['pattern']">Invalid image url!</span>
+            </div>
+          </div>
+          <!-- image display -->
+          <div  class="col-12 col-md-4 text-center">
+            <img *ngIf="image?.valid" class="img-fluid rounded-circle" [src]="image?.value" alt="user image">
+            <img *ngIf="image?.invalid" class="img-fluid rounded-circle" src="../../../assets/img/no-user-image.png" alt="no user image">
+          </div>
+        </div>
+         <!-- bio input -->
+        <div *ngIf="bio" class="mb-3">
+          <label for="bio" class="form-label">Bio:</label>
+          <textarea
+            name="bio"
+            id="bio"
+            class="form-control"
+            formControlName="bio"
+            placeholder="Tell us something about yourself..."
+            cols="30"
+            rows="5"
+            aria-describedby="bioHelp"
+          ></textarea>
+          <div *ngIf="bio.value.length <= bioMaxChar" id="bioHelp" class="form-text">Tell something about yourself in <em>{{bioMaxChar}}</em> characters. You have <strong>{{ bioMaxChar - bio.value.length}}</strong> more characters.</div>
+          <div *ngIf="bio.dirty" class="small text-danger">
+            <span *ngIf="bio.errors?.['maxlength']">The bio can be only maximum {{bioMaxChar}} characters!</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Update Mode Buttons -->
+      <div *ngIf="editMode" class="text-center mt-3">
+        <button
+          class="btn btn-danger mt-2 me-2"
+          type="button"
+          (click)="onCancel()"
+        >Cancel</button>
+        <button
+          class="btn btn-success mt-2"
+          id="submitSignUpButton"
+          type="submit"
+          [disabled]="userUpdateForm.invalid"
+        ><i class="fa fa-floppy-o me-1"></i>Save changes
+        </button>
+      </div>
+
+      <!-- Switch Mode Button -->
+      <div *ngIf="!editMode" class="text-center mt-3">
+        <button class="btn btn-info mt-2" type="button" (click)="switchMode()">
+          <i class="fa fa-pencil-square-o me-1"></i>Edit
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
