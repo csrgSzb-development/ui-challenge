@@ -1,0 +1,26 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th *ngFor="let col of config?.cols">{{ col.text }}</th>
+      <th *ngIf="config?.actions?.deleteButton || config?.actions?.updateButton">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of itemList">
+      <td *ngFor="let col of config!.cols" class="align-middle">
+          {{item[col.key] ? item[col.key] : "N/A" }}
+      </td>
+      <td>
+        <div class="btn-group">
+          <button  *ngIf="config?.actions?.updateButton" class="btn btn-info" (click)="onUpdate(item)">
+            <i class="fa fa-pencil"></i>
+          </button>
+          <button [disabled]="config?.forbiddenUsername === item.username" *ngIf="config?.actions?.deleteButton"class="btn btn-danger" (click)="onDelete(item)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
