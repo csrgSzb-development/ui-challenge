@@ -14,23 +14,10 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class EditUsersPageComponent implements OnInit, OnDestroy {
 
-  userTableConfig: TableConfig = {
-    cols: [
-      { key: "id", text: "ID" },
-      { key: "username", text: "Username" },
-      { key: "email", text: "E-mail" },
-      { key: "bio", text: "Bio" },
-      { key: "image", text: "Image" }
-    ],
-    actions: {
-      deleteButton: true,
-      updateButton: false
-    }
-  }
-
+  userTableConfig?: TableConfig;
   loggedInUser?: LoggedInUserData;
   userList?: UserData[];
-  userSubs?: Subscription;
+  private userSubs?: Subscription;
 
   constructor(
     private userService: UserService,
@@ -40,7 +27,8 @@ export class EditUsersPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setUsersList();
-    this.authService.loggedInUser.subscribe(
+    this.userTableConfig = this.userService.userTableConfig;
+    this.userSubs = this.authService.loggedInUser.subscribe(
       (data: LoggedInUserData) => {
         this.loggedInUser = data
         console.log(data);
@@ -51,7 +39,7 @@ export class EditUsersPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if(this.userSubs) {
       this.userSubs.unsubscribe()
-    }
+    };
   }
 
   deleteUser(userToDelete: UserData) {
@@ -68,7 +56,7 @@ export class EditUsersPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  setUsersList() {
+  private setUsersList() {
     this.userService.getAllUsers().subscribe({
       next: (data: UserData[]) => {
         const newUserlist = data.map( user => {
@@ -78,7 +66,7 @@ export class EditUsersPageComponent implements OnInit, OnDestroy {
           }
           return modUser;
         })
-        this.userList = newUserlist
+        this.userList = newUserlist;
       }
     })
   }

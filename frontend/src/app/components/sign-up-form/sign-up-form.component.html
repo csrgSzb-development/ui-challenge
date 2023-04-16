@@ -18,8 +18,8 @@
         <div *ngIf="username.invalid && username.touched"
           class="small text-danger">
           <span *ngIf="username.errors?.['required']">You must add a username!</span>
-          <span *ngIf="username.errors?.['minlength']">The username must be at least 4 characters!</span>
-          <span *ngIf="username.errors?.['maxlength']">The username must be maximum 10 characters!</span>
+          <span *ngIf="username.errors?.['minlength']">The username must be at least {{ usernameMinChar }} characters!</span>
+          <span *ngIf="username.errors?.['maxlength']">The username must be maximum {{ usernameMaxChar }} characters!</span>
         </div>
       </div>
       <div *ngIf="email" class="form-floating mb-3">
@@ -50,8 +50,8 @@
           class="small text-danger"
         >
           <span *ngIf="password.errors?.['required']">Please type your password!</span>
-          <span *ngIf="password.errors?.['minlength']">The password must be at least 6 characters!</span>
-          <span *ngIf="password.errors?.['maxlength']">The password must be maximum 10 characters!</span>
+          <span *ngIf="password.errors?.['minlength']">The password must be at least {{ passwordMinChar }} characters!</span>
+          <span *ngIf="password.errors?.['maxlength']">The password must be maximum {{ passwordMaxChar }} characters!</span>
         </div>
       </div>
       <!-- Submit SignUp Button-->

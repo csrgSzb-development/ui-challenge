@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class NavbarComponent implements OnInit, OnDestroy {
 
   user?: LoggedInUserData;
-  userSubs?: Subscription;
+  private userSubs?: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -21,14 +21,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.authService.loggedInUser.subscribe(
+    this.userSubs = this.authService.loggedInUser.subscribe(
       {next: (data: LoggedInUserData) => this.user = data}
-    )
+    );
   }
 
   ngOnDestroy(): void {
     if(this.userSubs) {
-      this.userSubs.unsubscribe()
+      this.userSubs.unsubscribe();
     }
   }
 

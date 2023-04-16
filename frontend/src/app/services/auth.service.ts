@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { LoginUser } from '../models/login-user';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators'
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators'
 import { UserData, UserRO } from '../models/user';
 import { LoggedInUserData } from '../models/logged-in-user-data';
 import { CreateUser } from '../models/create-user';
@@ -30,9 +30,10 @@ export class AuthService {
 
   createUser(newUser: CreateUser): Observable<UserRO>{
     return this.http.post<UserRO>(this.USERS_BASE_URL, newUser).pipe(
+      catchError(error => this.handleError(error, 'sign up')),
       tap((data: UserRO) => {
         if (data.user) {
-          this.setUserData(data.user)
+          this.handleAuthentication(data.user)
         }
       })
     );
@@ -40,20 +41,38 @@ export class AuthService {
 
   loginUser(loginUserData: LoginUser): Observable<UserRO> {
     return this.http.post<UserRO>(this.LOGIN_URL, loginUserData).pipe(
+      catchError(error => this.handleError(error, 'login')),
       tap((data: UserRO) => {
         if (data.user) {
-          this.setUserData(data.user)
+          this.handleAuthentication(data.user)
         }
       })
     )
   };
 
-  private setUserData(userData: UserData): void {
+  private handleAuthentication(userData: UserData): void {
     let loggedInUser: LoggedInUserData = { email: userData.email, username: userData.username }
     localStorage.setItem('token', userData.token);
     localStorage.setItem('userData', JSON.stringify(loggedInUser))
     this.__loggedInUser.next(loggedInUser);
   }
+
+  private handleError(errorRes: HttpErrorResponse, process: string) {
+    let errorsObject = errorRes.error.errors;
+    if(errorsObject){
+      let errorMessage = "Some problem occurs:";
+      for (const key in errorsObject) {
+        if (Object.prototype.hasOwnProperty.call(errorsObject, key)) {
+          errorMessage  += ` ${errorsObject[key]}`;
+        }
+      }
+      this.toastr.error(`${errorMessage}`, `Error during ${process}!`)
+    } else {
+      this.toastr.error(`${errorRes.error.message}`, `Error during ${process}!`)
+    }
+    return throwError(errorRes)
+  }
+
 
   private clearUserData(): void {
     localStorage.removeItem('token');

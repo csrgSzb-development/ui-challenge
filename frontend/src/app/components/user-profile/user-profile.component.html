@@ -19,8 +19,8 @@
           />
           <div *ngIf="username.invalid && username.touched" class="small text-danger">
             <span *ngIf="username.errors?.['required']">You must add a username!</span>
-            <span *ngIf="username.errors?.['minlength']">The username must be at least 4 characters!</span>
-            <span *ngIf="username.errors?.['maxlength']">The username must be maximum 10 characters!</span>
+            <span *ngIf="username.errors?.['minlength']">The username must be at least {{ usernameMinChar }} characters!</span>
+            <span *ngIf="username.errors?.['maxlength']">The username must be maximum {{ usernameMaxChar }} characters!</span>
           </div>
         </div>
         <!-- email input -->
@@ -75,9 +75,9 @@
             rows="5"
             aria-describedby="bioHelp"
           ></textarea>
-          <div *ngIf="bio.value.length <= bioMaxChar" id="bioHelp" class="form-text">Tell something about yourself in <em>{{bioMaxChar}}</em> characters. You have <strong>{{ bioMaxChar - bio.value.length}}</strong> more characters.</div>
+          <div *ngIf="bio.value.length <= bioMaxChar!" id="bioHelp" class="form-text">Tell something about yourself in <em>{{bioMaxChar}}</em> characters. You have <strong>{{ bioMaxChar! - bio.value.length}}</strong> more characters.</div>
           <div *ngIf="bio.dirty" class="small text-danger">
-            <span *ngIf="bio.errors?.['maxlength']">The bio can be only maximum {{bioMaxChar}} characters!</span>
+            <span *ngIf="bio.errors?.['maxlength']">The bio can be only maximum {{ bioMaxChar }} characters!</span>
           </div>
         </div>
       </fieldset>

@@ -7,7 +7,7 @@
         <input type="email" class="form-control" id="email" formControlName="email"
           placeholder="name@example.com">
         <label for="email">E-mail</label>
-        <div *ngIf="email.invalid && email.touched" class="small text-danger">
+        <div *ngIf="email.invalid && email.dirty" class="small text-danger">
           <span *ngIf="email.errors?.['required']">Please add your e-mail address!</span>
           <span *ngIf="email.errors?.['email']">Invalid e-mail address!</span>
         </div>
@@ -16,10 +16,10 @@
         <input type="password" class="form-control" id="password" formControlName="password"
           placeholder="Password">
         <label for="password">Password</label>
-        <div *ngIf="password.invalid && password.touched" class="small text-danger">
+        <div *ngIf="password.invalid && password.dirty" class="small text-danger">
           <span *ngIf="password.errors?.['required']">Please type your password!</span>
-          <span *ngIf="password.errors?.['minlength']">The password must be at least 6 characters!</span>
-          <span *ngIf="password.errors?.['maxlength']">The password must be maximum 10 characters!</span>
+          <span *ngIf="password.errors?.['minlength']">The password must be at least {{ passwordMinChar }} characters!</span>
+          <span *ngIf="password.errors?.['maxlength']">The password must be maximum {{ passwordMaxChar }} characters!</span>
         </div>
       </div>
 

@@ -17,20 +17,11 @@ export class UserProfileComponent implements OnInit {
 
   editMode: boolean = false;
   updateUserData!: UpdateUser;
-  bioMaxChar: number = 600
-
-
-  userUpdateForm: FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(10)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    image: new FormControl('', Validators.pattern(/^http[s]?:\/{2}[\w\.\/]+\.{1}jp[e]?g$/)),
-    bio: new FormControl('', Validators.maxLength(this.bioMaxChar)),
-  })
-
-  get username() { return this.userUpdateForm.get('username') };
-  get email() { return this.userUpdateForm.get('email') };
-  get image() { return this.userUpdateForm.get('image') };
-  get bio() { return this.userUpdateForm.get('bio') };
+  bioMaxChar?: number;
+  usernameMinChar?: number;
+  usernameMaxChar?: number;
+  imagePattern?: RegExp;
+  userUpdateForm!: FormGroup;
 
   constructor(
     private userService: UserService,
@@ -40,6 +31,17 @@ export class UserProfileComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.bioMaxChar = this.userService.userDataConfig.bioMaxChar;
+    this.usernameMinChar = this.userService.userDataConfig.usernameMinChar;
+    this.usernameMaxChar = this.userService.userDataConfig.usernameMaxChar;
+    this.imagePattern = this.userService.userDataConfig.imagePattern;
+    this.userUpdateForm = new FormGroup({
+      username: new FormControl('', [Validators.required, Validators.minLength(this.usernameMinChar), Validators.maxLength(this.usernameMaxChar)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      image: new FormControl('', Validators.pattern(this.imagePattern)),
+      bio: new FormControl('', Validators.maxLength(this.bioMaxChar)),
+    })
+
     this.userService.getUserInfo().pipe(
       take(1),
       tap((data: UserRO) => {
@@ -94,6 +96,10 @@ export class UserProfileComponent implements OnInit {
     });
   };
 
+  get username() { return this.userUpdateForm.get('username') };
+  get email() { return this.userUpdateForm.get('email') };
+  get image() { return this.userUpdateForm.get('image') };
+  get bio() { return this.userUpdateForm.get('bio') };
 
 }
 
