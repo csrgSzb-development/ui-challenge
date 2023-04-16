@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { LoginUser } from 'src/app/models/login-user';
 import { UserData, UserRO } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -30,20 +31,13 @@ export class LoginFormComponent implements OnInit {
   }
 
   public loginUser() {
-    console.log(this.loginForm.value);
-
-    const loginDataObject = this.loginForm.value;
-
-    // loginDataObject.email = null
-    // loginDataObject.password = null
+    const loginDataObject: LoginUser = this.loginForm.value;
 
     this.authService.loginUser(loginDataObject).subscribe({
       next: (data: UserRO) => {
-        console.dir(data)
         this.toastr.success(`Welcome ${data.user.username}!`, 'Successfull login!')
       },
       error: (error) => {
-        console.dir(error.error.errors);
         let errorsObject = error.error.errors;
         if(errorsObject){
           let errorMessage = "Some problem occurs:";
@@ -59,6 +53,7 @@ export class LoginFormComponent implements OnInit {
       },
       complete: () => {
         this.loginForm.reset();
+        this.router.navigate(['']);
       },
     })
   }

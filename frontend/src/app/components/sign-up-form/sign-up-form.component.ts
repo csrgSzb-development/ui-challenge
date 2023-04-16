@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { UserRO } from 'src/app/models/user';
-import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-sign-up-form',
@@ -23,25 +23,18 @@ export class SignUpFormComponent implements OnInit {
   get email() { return this.userSignUpForm.get('email') };
 
   constructor(
-    private userService: UserService,
+    private authService: AuthService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
     ) { }
 
   ngOnInit(): void {
   }
 
   public saveUser(): void {
-    console.log(this.userSignUpForm.value);
-
     const newUser = this.userSignUpForm.value;
 
-    // newUser.username = null;
-    // newUser.email = null;
-    // newUser.password = null;
-
-
-    this.userService.createUser(newUser).subscribe({
+    this.authService.createUser(newUser).subscribe({
       next: (data: UserRO)  => {
         this.toastr.success(`Registration was successfull!`, `Hello ${data.user.username}!`)
       },
@@ -62,21 +55,10 @@ export class SignUpFormComponent implements OnInit {
       },
       complete: () => {
         this.userSignUpForm.reset();
+        this.router.navigate(['']);
       }
     });
-
   }
-
-
-
 }
 
 
-// emailisNotEmpty:
-// "email should not be empty"
-// passwordisNotEmpty
-// :
-// "password should not be empty"
-// usernameisNotEmpty
-// :
-// "username should not be empty"

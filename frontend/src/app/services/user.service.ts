@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { CreateUser } from '../models/create-user';
-import { catchError } from 'rxjs/operators';
-import { ToastrService } from 'ngx-toastr';
 import { UserData, UserRO } from '../models/user';
 import { Observable } from 'rxjs';
 import { UpdateUser } from '../models/update-user';
@@ -17,14 +14,8 @@ export class UserService {
   private readonly USERS_BASE_URL = `${environment.apiUrl}users`;
 
   constructor(
-    private http: HttpClient,
-    private toastr: ToastrService
+    private http: HttpClient
   ) { }
-
-
-  createUser(newUser: CreateUser): Observable<UserRO>{
-    return this.http.post<UserRO>(this.USERS_BASE_URL, newUser);
-  };
 
   getUserInfo(): Observable<UserRO> {
     return this.http.get<UserRO>(this.USER_BASE_URL);
