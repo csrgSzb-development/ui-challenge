@@ -1,0 +1,9 @@
+<section class="my-3 p-3">
+  <h3 class="my-2">List and delete users</h3>
+
+  <app-data-table
+    [config]="userTableConfig"
+    [itemList]="userList"
+    (delete)="deleteUser($event)"
+  ></app-data-table>
+</section>

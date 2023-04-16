@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TableConfig } from 'src/app/models/table-config';
-import { UserData } from 'src/app/models/user';
 
 @Component({
   selector: 'app-data-table',
@@ -9,7 +8,7 @@ import { UserData } from 'src/app/models/user';
 })
 export class DataTableComponent implements OnInit {
 
-  @Input() itemList: any[] = [];
+  @Input() itemList?: any[];
   @Input() config?: TableConfig
   @Output() delete: EventEmitter<any> = new EventEmitter();
   @Output() update: EventEmitter<any> = new EventEmitter();

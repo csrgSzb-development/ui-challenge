@@ -5,7 +5,6 @@ export interface TableColumn {
 
 export interface TableConfig {
   cols: TableColumn[];
-  forbiddenUsername?: string;
   actions: {
     deleteButton: boolean;
     updateButton: boolean;
