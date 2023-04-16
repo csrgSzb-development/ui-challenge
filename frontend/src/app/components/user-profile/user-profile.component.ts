@@ -16,7 +16,7 @@ import { UserService } from 'src/app/services/user.service';
 export class UserProfileComponent implements OnInit {
 
   editMode: boolean = false;
-  private updateUserData!: UpdateUser;
+  updateUserData!: UpdateUser;
   bioMaxChar: number = 600
 
 
@@ -40,24 +40,18 @@ export class UserProfileComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.authService.loggedInUser.pipe(
+    this.userService.getUserInfo().pipe(
       take(1),
-      tap( data => {
-        console.log(data)
-        this.userService.getUserInfo().pipe(
-          take(1),
-        ).subscribe({
-          next: (data: UserRO) => {
-            console.log(data.user)
-            this.updateUserData = {
-              image:  data.user.image ? data.user.image : '',
-              email: data.user.email,
-              bio: data.user.bio,
-              username: data.user.username
-            }
-            this.userUpdateForm.patchValue(data.user)
+      tap((data: UserRO) => {
+        if(data) {
+          this.updateUserData = {
+            image:  data.user.image ? data.user.image : '',
+            email: data.user.email,
+            bio: data.user.bio,
+            username: data.user.username
           }
-        })
+          this.userUpdateForm.patchValue(this.updateUserData)
+        }
       })
     ).subscribe()
   }
@@ -72,17 +66,13 @@ export class UserProfileComponent implements OnInit {
   }
 
   updateUser(): void {
-    console.log(this.userUpdateForm.value);
-
     const updateUserData: UpdateUser = this.userUpdateForm.value;
 
     this.userService.updateUserInfo(updateUserData).subscribe({
       next: (data)  => {
-        console.log(data)
-        this.toastr.success(`Profile update was successfull!`, `OK`)
+        this.toastr.success(`Profile update was successfull!`, `OK`);
       },
       error: (error) => {
-        console.dir(error.error);
         let errorsObject = error.error.errors;
         if(errorsObject){
           let errorMessage = "Some problem occurs:";
@@ -98,6 +88,8 @@ export class UserProfileComponent implements OnInit {
       },
       complete: () => {
         this.switchMode();
+        this.authService.setLoggedInUser({ username: updateUserData.username, email: updateUserData.email });
+        this.router.navigate(['']);
       }
     });
   };

@@ -1,4 +1,4 @@
-<section class="card shadow">
+<section *ngIf="updateUserData" class="card shadow my-5 col-md-8 offset-md-2">
   <div class="card-body">
     <h5 class="card-title text-primary">My Profile</h5>
     <hr />
@@ -58,8 +58,8 @@
           </div>
           <!-- image display -->
           <div  class="col-12 col-md-4 text-center">
-            <img *ngIf="image?.valid" class="img-fluid rounded-circle" [src]="image?.value" alt="user image">
-            <img *ngIf="image?.invalid" class="img-fluid rounded-circle" src="../../../assets/img/no-user-image.png" alt="no user image">
+            <img *ngIf="image?.value && image?.valid" class="img-fluid rounded-circle" [src]="image?.value" alt="user image">
+            <img *ngIf="!image?.value || image?.invalid" class="img-fluid rounded-circle" src="../../../assets/img/no-user-image.png" alt="no user image">
           </div>
         </div>
          <!-- bio input -->
@@ -94,14 +94,14 @@
           id="submitSignUpButton"
           type="submit"
           [disabled]="userUpdateForm.invalid"
-        ><i class="fa fa-floppy-o me-1"></i>Save changes
+        ><i class="fa fa-floppy-o me-1" aria-hidden="true"></i>Save changes
         </button>
       </div>
 
       <!-- Switch Mode Button -->
       <div *ngIf="!editMode" class="text-center mt-3">
         <button class="btn btn-info mt-2" type="button" (click)="switchMode()">
-          <i class="fa fa-pencil-square-o me-1"></i>Edit
+          <i class="fa fa-pencil-square-o me-1" aria-hidden="true"></i>Edit
         </button>
       </div>
     </form>
