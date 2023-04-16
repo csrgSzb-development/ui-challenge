@@ -10,12 +10,27 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignUpFormComponent } from './components/sign-up-form/sign-up-form.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { JwtInterceptor } from './services/jwt.interceptor';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { DataTableComponent } from './shared/data-table/data-table.component';
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import { HeaderComponent } from './shared/header/header.component';
+import { HomeComponent } from './components/home/home.component';
+import { EditUsersPageComponent } from './pages/edit-users-page/edit-users-page.component';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
     SignUpFormComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    UserProfileComponent,
+    DataTableComponent,
+    NavbarComponent,
+    HeaderComponent,
+    HomeComponent,
+    EditUsersPageComponent,
+
   ],
   imports: [
     BrowserModule,
