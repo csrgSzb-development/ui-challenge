@@ -1,6 +1,6 @@
 <nav class="navbar navbar-dark fixed-top">
   <div class="">
-    <button class="navbar-toggler bg-opacity-75 bg-dark ms-2 " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+    <button class="navbar-toggler bg-opacity-75 bg-dark ms-2 shadow" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
       <span *ngIf="!user" class="navbar-toggler-icon"></span>
       <span *ngIf="user" class="fa fa-user-circle-o text-success">
       </span>
@@ -37,11 +37,11 @@
                 Article
               </a>
               <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a class="dropdown-item" routerLink="create-article" routerLinkActive="active">Create an article</a></li>
+                <li><a class="dropdown-item" routerLink="new-article" routerLinkActive="active">Create an article</a></li>
               </ul>
             </li>
             <li class="nav-item">
-              <a class="nav-link" (click)="logoutUser()" style="cursor: pointer;"><i class="fa fa-power-off me-1" aria-hidden="true"></i>Log out</a>
+              <a class="nav-link text-danger" (click)="logoutUser()" style="cursor: pointer;"><i class="fa fa-power-off me-1" aria-hidden="true"></i>Log out</a>
             </li>
           </span>
         </ul>
