@@ -7,6 +7,8 @@
     (click)="openArticle(article.slug)">
     <h4 class="text fw-bold border-start  border-5 border-warning ps-2">{{article.title}}</h4>
     <p>{{article.description}}</p>
+    <small class="text-end text-secondary fst-italic">by {{article.author.username}}
+      <img *ngIf="article.author.image" class="rounded-circle" style="height: 2rem;" [src]="article.author.image" alt="author image"></small>
   </article>
 
 </section>

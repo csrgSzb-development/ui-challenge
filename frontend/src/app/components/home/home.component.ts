@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ArticleData, ArticlesRO } from 'src/app/models/article';
+import { ArticleData, ArticlesRO, ArticlesRespData } from 'src/app/models/article';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ArticleService } from 'src/app/services/article.service';
@@ -12,7 +12,7 @@ import { ArticleService } from 'src/app/services/article.service';
 })
 export class HomeComponent implements OnInit {
 
-  articleList$?: Observable<ArticleData[]>;
+  articleList$?: Observable<ArticlesRespData[]>;
 
   constructor(
     private articleService: ArticleService,
