@@ -1,0 +1,99 @@
+<section class="card shadow my-5 col-md-8 offset-md-2">
+  <div class="card-body">
+    <h5 class="card-title text-primary">{{ updateArticleSlug ? 'Update' : 'New' }} Article</h5>
+    <hr />
+    <p class="card-text">
+      Go on and write your article.
+    </p>
+    <form [formGroup]="articleForm" (ngSubmit)="onSubmit()" novalidate>
+      <fieldset>
+        <!-- title input -->
+        <div *ngIf="title" class="mb-3">
+          <label for="title" class="form-label">Title:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            formControlName="title"
+            placeholder="Add your title..."
+          />
+          <div *ngIf="title.invalid && title.touched" class="small text-danger">
+            <span *ngIf="title.errors?.['required']">You must add a title!</span>
+            <span *ngIf="title.errors?.['minlength']">The title can be at least {{ titleMinChar }} characters!</span>
+            <span *ngIf="title.errors?.['maxlength']">The title can be maximum {{ titleMaxChar }} characters!</span>
+          </div>
+        </div>
+        <!-- description input -->
+        <div *ngIf="description" class="mb-3">
+          <label for="description" class="form-label">Description:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            formControlName="description"
+            placeholder="Add a description for your article..."
+          />
+          <div *ngIf="description.invalid && description.touched" class="small text-danger">
+            <span *ngIf="description.errors?.['required']">You must add a description!</span>
+            <span *ngIf="description.errors?.['minlength']">The title can be at least {{ descriptionMinChar }} characters!</span>
+            <span *ngIf="description.errors?.['maxlength']">The title can be maximum {{ descriptionMaxChar }} characters!</span>
+          </div>
+        </div>
+        <!-- tags formArray -->
+        <div class="row mb-3" *ngIf="tagList">
+          <p>Tags:</p>
+          <div class="col-12" formArrayName="tagList">
+            <!-- tag formcontrols -->
+            <div *ngFor="let tagCtrl of tagListFormArraycontrols; let i = index" class="row my-2">
+              <div class="col-10">
+                <div class="input-group">
+                  <span class="input-group-text">#</span>
+                  <input type="text" class="form-control" [formControlName]="i" [id]=i aria-describedby="tagHelp">
+                </div>
+              </div>
+              <div class="col-2 align-self-end">
+                <button type="button" class="btn btn-danger" (click)="onDeleteTag(i)">X</button>
+              </div>
+              <div *ngIf="tagList.controls[i].dirty" class="small text-danger mt-1 col-12">
+                <span *ngIf="tagList.controls[i].errors?.['minlength']">The tag can be at least {{ tagMinChar }} characters!</span>
+                <span *ngIf="tagList.controls[i].errors?.['maxlength']">The tag can be maximum {{ tagMaxChar }} characters!</span>
+                <span *ngIf="tagList.controls[i].errors?.['pattern']">The tag can be only alphabetical characters!</span>
+              </div>
+            </div>
+            <div id="tagHelp" class="form-text">Add one or more tags to your article. A tag must be between {{tagMinChar}}-{{tagMaxChar}} alphabetical characters.</div>
+            <hr>
+            <div class="row">
+              <div class="col-12">
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  (click)="onAddTag()">Add new tag</button>
+              </div>
+            </div>
+          </div>
+        </div>
+         <!-- body input -->
+        <div *ngIf="body" class="mb-3">
+          <label for="body" class="form-label">Body:</label>
+          <textarea
+            name="body"
+            id="body"
+            class="form-control"
+            formControlName="body"
+            placeholder="Write your ideas and thoughts..."
+            cols="30"
+            rows="5"
+            aria-describedby="bodyHelp"
+          ></textarea>
+          <div id="bodyHelp" class="form-text">Type your article here.</div>
+          </div>
+      </fieldset>
+
+      <div>
+        <button type="submit" class="btn btn-success" [disabled]="articleForm.invalid"><i class="fa fa-floppy-o me-1" aria-hidden="true"></i>{{ updateArticleSlug ? 'Update' : 'Save'}}</button>
+        <button type="button" class="btn btn-secondary mx-3" *ngIf="!updateArticleSlug" (click)="onCancel()">Back to home</button>
+      </div>
+    </form>
+  </div>
+</section>
+

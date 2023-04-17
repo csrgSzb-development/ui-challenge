@@ -67,8 +67,10 @@ export class AuthService {
         }
       }
       this.toastr.error(`${errorMessage}`, `Error during ${process}!`)
-    } else {
+    } else if (errorRes.error.message) {
       this.toastr.error(`${errorRes.error.message}`, `Error during ${process}!`)
+    } else {
+      this.toastr.error(`An unknown error occurred.`, `Error during ${process}!`)
     }
     return throwError(errorRes)
   }
