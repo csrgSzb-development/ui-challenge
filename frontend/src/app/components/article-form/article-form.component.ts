@@ -54,6 +54,8 @@ export class ArticleFormComponent implements OnInit {
       this.articleService.getArticleBySlug(this.updateArticleSlug).subscribe({
         next: (data: ArticleRO) => {
           this.articleForm.patchValue(data.article);
+          this.onDeleteTag(0);
+          data.article.tagList.forEach(tag => this.onAddTag(tag))
         },
         error: (err) => { console.log(err) },
       })
@@ -65,6 +67,7 @@ export class ArticleFormComponent implements OnInit {
     const newArticle: CreateArticle = {
       ...this.articleForm.value,
     }
+
     if (this.updateArticleSlug) {
       this.articleService.updateArticle(newArticle, this.updateArticleSlug).subscribe({
         next: (data: ArticleRO) => {
@@ -91,9 +94,9 @@ export class ArticleFormComponent implements OnInit {
     this.navigateToHome();
   }
 
-  onAddTag() {
+  onAddTag(tag: string = '') {
     (this.tagList as FormArray).push(
-      new FormControl('', [Validators.minLength(this.tagMinChar!), Validators.maxLength(this.tagMaxChar!), Validators.pattern(this.tagPattern!)]),
+      new FormControl(tag, [Validators.minLength(this.tagMinChar!), Validators.maxLength(this.tagMaxChar!), Validators.pattern(this.tagPattern!)]),
     );
   }
 

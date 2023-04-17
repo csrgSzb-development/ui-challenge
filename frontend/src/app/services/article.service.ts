@@ -14,9 +14,9 @@ export class ArticleService {
 
   private readonly _articleDataConfig = {
     titleMinChar: 4,
-    titleMaxChar: 25,
+    titleMaxChar: 50,
     descriptionMinChar: 6,
-    descriptionMaxChar: 30,
+    descriptionMaxChar: 80,
     tagMinChar: 3,
     tagMaxChar: 10,
     tagPattern: /^[A-Za-z]*$/

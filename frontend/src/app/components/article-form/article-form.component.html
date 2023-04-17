@@ -35,8 +35,8 @@
           />
           <div *ngIf="description.invalid && description.touched" class="small text-danger">
             <span *ngIf="description.errors?.['required']">You must add a description!</span>
-            <span *ngIf="description.errors?.['minlength']">The title can be at least {{ descriptionMinChar }} characters!</span>
-            <span *ngIf="description.errors?.['maxlength']">The title can be maximum {{ descriptionMaxChar }} characters!</span>
+            <span *ngIf="description.errors?.['minlength']">The description can be at least {{ descriptionMinChar }} characters!</span>
+            <span *ngIf="description.errors?.['maxlength']">The description can be maximum {{ descriptionMaxChar }} characters!</span>
           </div>
         </div>
         <!-- tags formArray -->
@@ -85,7 +85,7 @@
             rows="5"
             aria-describedby="bodyHelp"
           ></textarea>
-          <div id="bodyHelp" class="form-text">Type your article here.</div>
+          <div id="bodyHelp" class="form-text">Type your article here. You can add more paragraphs by insert an enter.</div>
           </div>
       </fieldset>
 

@@ -10,14 +10,19 @@ export interface ArticleData {
 	slug: string;
 	title: string;
 	description: string;
-	body?: string;
-	tagList?: string[];
+	body: string;
+	tagList: string[];
 	created?: number;
 	updated?: number;
 	favorited?: boolean;
 	favoritesCount?: number;
-	author?: UserData;
-  comments: Comment[]
+}
+
+export interface ArticleRespData extends ArticleData {
+  author: UserData;
+}
+export interface ArticlesRespData extends ArticleData {
+  comments: Comment[];
 }
 
 export interface CommentsRO {
@@ -25,10 +30,10 @@ export interface CommentsRO {
 }
 
 export interface ArticleRO {
-	article: ArticleData;
+	article: ArticleRespData;
 }
 
 export interface ArticlesRO {
-	articles: ArticleData[];
+	articles: ArticlesRespData[];
 	articlesCount: number;
 }
