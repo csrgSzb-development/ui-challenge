@@ -1,0 +1,12 @@
+<section *ngIf="articleList$" class="row my-3 p-3 justify-content-around">
+
+  <article
+    *ngFor="let article of articleList$ | async"
+    class="col-12 col-md-6 col-lg-4 p-3 mt-5 mx-3 border-primary border-bottom border-end row justify-content-start align-items-center"
+    style="cursor: pointer;"
+    (click)="openArticle(article.slug)">
+    <h4 class="text fw-bold border-start  border-5 border-warning ps-2">{{article.title}}</h4>
+    <p>{{article.description}}</p>
+  </article>
+
+</section>

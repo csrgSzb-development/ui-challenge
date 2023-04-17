@@ -1,0 +1,22 @@
+<section *ngIf=article class="my-3 my-md-5 container-md">
+  <article class="p-3 border-4 border-warning border-start">
+    <h2 class="fw-bold mb-3">{{ article.title }}</h2>
+    <div class="row justify-content-start">
+      <p class="col-12 col-md-4">Tags: <span class="fst-italic text-primary" *ngFor="let tag of article.tagList">#{{tag}} </span></p>
+      <p class="col-12 col-md-4">Created: <span class="fst-italic"> {{ article.created | date:"medium"}} </span></p>
+    </div>
+    <div>
+      <p class="fst-italic">{{article.description}}</p>
+    </div>
+    <hr>
+    <div *ngIf="editedArticleBody.length === 1" class="mt-5">
+      <p>{{article.body}}</p>
+    </div>
+    <div *ngIf="editedArticleBody.length > 1" class="mt-5">
+      <p *ngFor="let par of editedArticleBody">{{par}}</p>
+    </div>
+  </article>
+  <div class="mt-3 text-center">
+    <button class="btn btn-outline-primary" routerLink="''">Back to Home</button>
+  </div>
+</section>

@@ -17,6 +17,7 @@ import { HeaderComponent } from './shared/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { EditUsersPageComponent } from './pages/edit-users-page/edit-users-page.component';
 import { ArticleFormComponent } from './components/article-form/article-form.component';
+import { ArticleDetailsComponent } from './components/article-details/article-details.component';
 
 
 
@@ -32,6 +33,7 @@ import { ArticleFormComponent } from './components/article-form/article-form.com
     HomeComponent,
     EditUsersPageComponent,
     ArticleFormComponent,
+    ArticleDetailsComponent,
 
   ],
   imports: [
