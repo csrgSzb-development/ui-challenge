@@ -79,7 +79,6 @@ export class ArticleFormComponent implements OnInit {
     } else {
       this.articleService.saveArticle(newArticle).subscribe({
         next: (data: ArticleData ) => {
-          console.log(data)
           this.toastr.success(`Article with \"${data.title}\" title was saved.`, 'Success!')
           this.articleForm.reset();
           this.navigateToHome();

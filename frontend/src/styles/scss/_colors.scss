@@ -4,12 +4,12 @@ $light-cornflower-blue: rgba(142, 202, 230, 1);
 $blue-green: rgba(33, 158, 188, 1);
 $prussian-blue: rgba(2, 48, 71, 1);
 $selective-yellow: rgba(255, 183, 3, 1);
-$tangerine: rgba(251, 133, 0, 1);
+$tangerine: #fb5c00;
 
 
 $charcoal: rgba(35, 61, 77, 1);
 $pumpkin: rgba(254, 127, 45, 1);
-$sunglow: rgba(252, 202, 70, 1);
+$sunglow: #fcca46;
 $olivine: rgba(161, 193, 129, 1);
 $polished-pine: rgba(97, 155, 138, 1);
 
@@ -17,11 +17,11 @@ $polished-pine: rgba(97, 155, 138, 1);
 // BOOSTRAP color variables override
 
 
-$primary: $tangerine;
-// $secondary: $light-cornflower-blue;
-// $warning: $pumpkin;
-// $danger: $pumpkin;
-// $success: $olivine;
-// $info: $blue-green;
+$primary: #1863dc;
+$secondary: #2672fb;
+$warning: #fcca46;
+$danger: #fb5c00;
+$success: #008000;
+$info: #d0d5d2;
 
 // $headings-color:  $primary

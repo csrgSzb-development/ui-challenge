@@ -1,9 +1,13 @@
 <section class="my-3 p-3">
-  <h3 class="my-2">List and delete users</h3>
-
+  <h3 class="my-5 text-primary fw-bold">List and delete users</h3>
   <app-data-table
     [config]="userTableConfig"
     [itemList]="userList"
     (delete)="deleteUser($event)"
   ></app-data-table>
 </section>
+
+<div class="my-3 text-center">
+  <button class="btn btn-outline-primary" routerLink="''">Back to Home</button>
+</div>
+

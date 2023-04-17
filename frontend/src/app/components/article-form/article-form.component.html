@@ -91,7 +91,7 @@
 
       <div>
         <button type="submit" class="btn btn-success" [disabled]="articleForm.invalid"><i class="fa fa-floppy-o me-1" aria-hidden="true"></i>{{ updateArticleSlug ? 'Update' : 'Save'}}</button>
-        <button type="button" class="btn btn-secondary mx-3" *ngIf="!updateArticleSlug" (click)="onCancel()">Back to home</button>
+        <button type="button" class="btn btn-outline-secondary mx-3" *ngIf="!updateArticleSlug" (click)="onCancel()">Back to home</button>
       </div>
     </form>
   </div>

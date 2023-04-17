@@ -1,7 +1,7 @@
 <section class="table-responsive">
   <table class="table table-striped">
-    <thead class="table-dark">
-      <tr>
+    <thead>
+      <tr class="text-primary">
         <th *ngFor="let col of config?.cols">{{ col.text }}</th>
         <th
           *ngIf="config?.actions?.deleteButton || config?.actions?.updateButton"
@@ -20,7 +20,7 @@
             <img *ngIf="!item.image" class="img-fluid rounded-circle" src="../../../assets/img/no-user-image.png" alt="no user image" style="height: 50px;">
           </span>
         </td>
-        <td>
+        <td class="align-middle">
           <div class="btn-group">
             <button
               *ngIf="config?.actions?.updateButton"

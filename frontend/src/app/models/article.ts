@@ -19,10 +19,10 @@ export interface ArticleData {
 }
 
 export interface ArticleRespData extends ArticleData {
-  author: UserData;
+  comments: Comment[];
 }
 export interface ArticlesRespData extends ArticleData {
-  comments: Comment[];
+  author: UserData;
 }
 
 export interface CommentsRO {
