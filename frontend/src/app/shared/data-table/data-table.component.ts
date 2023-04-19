@@ -19,10 +19,10 @@ export class DataTableComponent implements OnInit {
   }
 
   onUpdate(item: any): void {
-    this.update.emit(item)
+    this.update.emit(item);
   }
   onDelete(item: any): void {
-    this.delete.emit(item)
+    this.delete.emit(item);
   }
 
 }

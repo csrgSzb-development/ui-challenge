@@ -12,18 +12,23 @@ export class AuthGuardService implements CanActivate {
 
   constructor(
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    const userData: LoggedInUserData = JSON.parse(localStorage.getItem('userData')!);
-    const token = localStorage.getItem('token');
-    if (!userData && !token) {
-      this.toastr.info('You must log in to do that...', 'Ooops!')
-      return this.router.createUrlTree(['/login']);
-    } else {
-      return true;
-    }
+
+    return this.authService.loggedInUser.pipe(
+      take(1),
+      map(user => {
+        if (!user) {
+          this.toastr.info('You must log in to do that...', 'Ooops!');
+          return this.router.createUrlTree(['/login']);
+        } else {
+          return true;
+        }
+      })
+    );
   }
 }
 

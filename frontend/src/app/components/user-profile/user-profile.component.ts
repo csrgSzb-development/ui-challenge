@@ -52,7 +52,7 @@ export class UserProfileComponent implements OnInit {
             bio: data.user.bio,
             username: data.user.username
           }
-          this.userUpdateForm.patchValue(this.updateUserData)
+          this.userUpdateForm.patchValue(this.updateUserData);
         }
       })
     ).subscribe()
@@ -64,7 +64,7 @@ export class UserProfileComponent implements OnInit {
 
   onCancel() {
     this.switchMode();
-    this.userUpdateForm.patchValue(this.updateUserData)
+    this.userUpdateForm.patchValue(this.updateUserData);
   }
 
   updateUser(): void {

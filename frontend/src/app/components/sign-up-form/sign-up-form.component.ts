@@ -43,7 +43,7 @@ export class SignUpFormComponent implements OnInit {
 
     this.authService.createUser(newUser).subscribe({
       next: (data: UserRO)  => {
-        this.toastr.success(`Registration was successfull!`, `Hello ${data.user.username}!`)
+        this.toastr.success(`Registration was successfull!`, `Hello ${data.user.username}!`);
       },
       complete: () => {
         this.userSignUpForm.reset();

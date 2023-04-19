@@ -43,7 +43,7 @@ export class LoginFormComponent implements OnInit {
 
     this.authService.loginUser(loginDataObject).subscribe({
       next: (data: UserRO) => {
-        this.toastr.success(`Welcome ${data.user.username}!`, 'Successfull login!')
+        this.toastr.success(`Welcome ${data.user.username}!`, 'Successfull login!');
       },
       complete: () => {
         this.loginForm.reset();

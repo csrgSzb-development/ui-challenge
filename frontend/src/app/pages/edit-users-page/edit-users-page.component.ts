@@ -30,7 +30,7 @@ export class EditUsersPageComponent implements OnInit, OnDestroy {
     this.userTableConfig = this.userService.userTableConfig;
     this.userSubs = this.authService.loggedInUser.subscribe(
       (data: LoggedInUserData) => {
-        this.loggedInUser = data
+        this.loggedInUser = data;
         console.log(data);
       }
     )
@@ -38,13 +38,13 @@ export class EditUsersPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if(this.userSubs) {
-      this.userSubs.unsubscribe()
+      this.userSubs.unsubscribe();
     };
   }
 
   deleteUser(userToDelete: UserData) {
     if(userToDelete.email === this.loggedInUser?.email) {
-      this.toastr.info('You can\'t delete yourself!', 'Ooops')
+      this.toastr.info('You can\'t delete yourself!', 'Ooops');
       return
     }
     if(confirm(`Really delete ${userToDelete.username}?`)){

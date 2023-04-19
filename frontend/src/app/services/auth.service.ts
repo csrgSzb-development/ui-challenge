@@ -33,7 +33,7 @@ export class AuthService {
       catchError(error => this.handleError(error, 'sign up')),
       tap((data: UserRO) => {
         if (data.user) {
-          this.handleAuthentication(data.user)
+          this.handleAuthentication(data.user);
         }
       })
     );
@@ -44,16 +44,16 @@ export class AuthService {
       catchError(error => this.handleError(error, 'login')),
       tap((data: UserRO) => {
         if (data.user) {
-          this.handleAuthentication(data.user)
+          this.handleAuthentication(data.user);
         }
       })
     )
   };
 
   private handleAuthentication(userData: UserData): void {
-    let loggedInUser: LoggedInUserData = { email: userData.email, username: userData.username }
+    let loggedInUser: LoggedInUserData = { email: userData.email, username: userData.username };
     localStorage.setItem('token', userData.token);
-    localStorage.setItem('userData', JSON.stringify(loggedInUser))
+    localStorage.setItem('userData', JSON.stringify(loggedInUser));
     this.__loggedInUser.next(loggedInUser);
   }
 
@@ -66,11 +66,11 @@ export class AuthService {
           errorMessage  += ` ${errorsObject[key]}`;
         }
       }
-      this.toastr.error(`${errorMessage}`, `Error during ${process}!`)
+      this.toastr.error(`${errorMessage}`, `Error during ${process}!`);
     } else if (errorRes.error.message) {
-      this.toastr.error(`${errorRes.error.message}`, `Error during ${process}!`)
+      this.toastr.error(`${errorRes.error.message}`, `Error during ${process}!`);
     } else {
-      this.toastr.error(`An unknown error occurred.`, `Error during ${process}!`)
+      this.toastr.error(`An unknown error occurred.`, `Error during ${process}!`);
     }
     return throwError(errorRes)
   }
