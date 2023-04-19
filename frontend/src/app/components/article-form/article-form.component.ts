@@ -13,7 +13,6 @@ import { ArticleService } from 'src/app/services/article.service';
 })
 export class ArticleFormComponent implements OnInit {
 
-  updateArticleData: any;
   updateArticleSlug?: string;
   titleMinChar?: number;
   titleMaxChar?: number;
@@ -47,7 +46,7 @@ export class ArticleFormComponent implements OnInit {
       tagList: new FormArray([
         new FormControl('', [Validators.minLength(this.tagMinChar), Validators.maxLength(this.tagMaxChar), Validators.pattern(this.tagPattern)]),
       ])
-    })
+    });
 
     this.updateArticleSlug = this.activatedRoute.snapshot.params['slug'];
     if (this.updateArticleSlug) {
@@ -55,9 +54,9 @@ export class ArticleFormComponent implements OnInit {
         next: (data: ArticleRO) => {
           this.articleForm.patchValue(data.article);
           this.onDeleteTag(0);
-          data.article.tagList.forEach(tag => this.onAddTag(tag))
+          data.article.tagList.forEach(tag => this.onAddTag(tag));
         },
-        error: (err) => { console.log(err) },
+        error: (err) => this.toastr.error(`${err}`, 'Error during loading!'),
       })
     }
   }
@@ -74,7 +73,7 @@ export class ArticleFormComponent implements OnInit {
           this.toastr.info(`The article with \"${data.article.title}\" title was updated.`, 'Success!')
           this.navigateToHome();
         },
-        error: (e) => { this.toastr.error(`${e}`, 'Error during save!') },
+        error: (err) => this.toastr.error(`${err}`, 'Error during save!')
       })
     } else {
       this.articleService.saveArticle(newArticle).subscribe({
@@ -83,14 +82,23 @@ export class ArticleFormComponent implements OnInit {
           this.articleForm.reset();
           this.navigateToHome();
         },
-        error: (e) => {
-          this.toastr.error(`${e}`, 'Error during save!') },
+        error: (err) => {
+          this.toastr.error(`${err}`, 'Error during save!') }
       })
     }
   };
 
   onCancel(): void {
     this.navigateToHome();
+  }
+
+  onDelete() {
+    if(confirm('Are you sure, that you want to delete this article?')) {
+      this.articleService.deleteArticle(this.updateArticleSlug!).subscribe({
+        next: data => this.toastr.success(`Article was succesfully deleted!`, 'OK'),
+        complete: () => this.navigateToHome()
+      })
+    }
   }
 
   onAddTag(tag: string = '') {
@@ -104,13 +112,13 @@ export class ArticleFormComponent implements OnInit {
   }
 
   private navigateToHome(): void {
-    this.router.navigate([''])
+    this.router.navigate(['']);
   }
 
   get title() { return this.articleForm.get('title') };
   get description() { return this.articleForm.get('description') };
   get body() { return this.articleForm.get('body') };
   get tagList() { return this.articleForm.get('tagList') as FormArray};
-  get tagListFormArraycontrols() { return (this.tagList as FormArray).controls }
+  get tagListFormArraycontrols() { return (this.tagList as FormArray).controls };
 
 }

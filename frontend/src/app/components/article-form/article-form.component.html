@@ -3,7 +3,7 @@
     <h5 class="card-title text-primary">{{ updateArticleSlug ? 'Update' : 'New' }} Article</h5>
     <hr />
     <p class="card-text">
-      Go on and write your article.
+      Go on and {{ updateArticleSlug ? 'update' : 'write' }} your article.
     </p>
     <form [formGroup]="articleForm" (ngSubmit)="onSubmit()" novalidate>
       <fieldset>
@@ -17,7 +17,7 @@
             formControlName="title"
             placeholder="Add your title..."
           />
-          <div *ngIf="title.invalid && title.touched" class="small text-danger">
+          <div *ngIf="title.invalid && title.dirty" class="small text-danger">
             <span *ngIf="title.errors?.['required']">You must add a title!</span>
             <span *ngIf="title.errors?.['minlength']">The title can be at least {{ titleMinChar }} characters!</span>
             <span *ngIf="title.errors?.['maxlength']">The title can be maximum {{ titleMaxChar }} characters!</span>
@@ -33,7 +33,7 @@
             formControlName="description"
             placeholder="Add a description for your article..."
           />
-          <div *ngIf="description.invalid && description.touched" class="small text-danger">
+          <div *ngIf="description.invalid && description.dirty" class="small text-danger">
             <span *ngIf="description.errors?.['required']">You must add a description!</span>
             <span *ngIf="description.errors?.['minlength']">The description can be at least {{ descriptionMinChar }} characters!</span>
             <span *ngIf="description.errors?.['maxlength']">The description can be maximum {{ descriptionMaxChar }} characters!</span>
@@ -82,7 +82,7 @@
             formControlName="body"
             placeholder="Write your ideas and thoughts..."
             cols="30"
-            rows="5"
+            rows="15"
             aria-describedby="bodyHelp"
           ></textarea>
           <div id="bodyHelp" class="form-text">Type your article here. You can add more paragraphs by insert an enter.</div>
@@ -91,7 +91,8 @@
 
       <div>
         <button type="submit" class="btn btn-success" [disabled]="articleForm.invalid"><i class="fa fa-floppy-o me-1" aria-hidden="true"></i>{{ updateArticleSlug ? 'Update' : 'Save'}}</button>
-        <button type="button" class="btn btn-outline-secondary mx-3" *ngIf="!updateArticleSlug" (click)="onCancel()">Back to home</button>
+        <button *ngIf="updateArticleSlug" type="button" class="btn btn-outline-danger mx-3" (click)="onDelete()">Delete</button>
+        <button type="button" class="btn btn-outline-secondary mx-3" (click)="onCancel()">Back to home</button>
       </div>
     </form>
   </div>
