@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http'
 import { CreateArticle } from '../models/create-article';
 import { Observable } from 'rxjs';
 import { ArticleData, ArticleRO, ArticlesRO } from '../models/article';
+import { CreateComment } from '../models/comment';
 
 @Injectable({
   providedIn: 'root'
@@ -35,15 +36,35 @@ export class ArticleService {
   }
 
   getArticleBySlug(slug: string): Observable<ArticleRO> {
-    return this.http.get<ArticleRO>(`${this.ARTICLES_BASE_URL}/${slug}`)
+    return this.http.get<ArticleRO>(`${this.ARTICLES_BASE_URL}/${slug}`);
   }
 
   updateArticle(updatedArticle: CreateArticle, slug: string): Observable<ArticleRO> {
-    return this.http.put<ArticleRO>(`${this.ARTICLES_BASE_URL}/${slug}`, updatedArticle)
+    return this.http.put<ArticleRO>(`${this.ARTICLES_BASE_URL}/${slug}`, updatedArticle);
   }
 
-  deleteArticle(slug: string) {
-    return this.http.delete(`${this.ARTICLES_BASE_URL}/${slug}`)
+  deleteArticle(slug: string): Observable<{raw: []}> {
+    return this.http.delete<{raw: []}>(`${this.ARTICLES_BASE_URL}/${slug}`);
+  }
+
+  favoriteArticle(slug: string):  Observable<ArticleRO> {
+    return this.http.post<ArticleRO>(`${this.ARTICLES_BASE_URL}/${slug}/favorite`, {});
+  }
+
+  unFavoriteArticle(slug: string): Observable<ArticleRO> {
+    return this.http.delete<ArticleRO>(`${this.ARTICLES_BASE_URL}/${slug}/favorite`, {});
+  }
+
+  saveComment(slug: string, comment: CreateComment): Observable<ArticleRO> {
+    return this.http.post<ArticleRO>(`${this.ARTICLES_BASE_URL}/${slug}/comments`, comment);
+  }
+
+  getArticlesComments(slug: string) {
+    return this.http.get(`${this.ARTICLES_BASE_URL}/${slug}/comments`);
+  }
+
+  deleteComment(slug: string, commentId: number): Observable<ArticleRO> {
+    return this.http.delete<ArticleRO>(`${this.ARTICLES_BASE_URL}/${slug}/comments/${commentId}`);
   }
 
   get articleDataConfig() {

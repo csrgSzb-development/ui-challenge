@@ -1,22 +1,109 @@
-<section *ngIf=article class="my-3 my-md-5 container-md">
+<section *ngIf="article" class="my-3 my-md-5 container-md">
   <article class="p-3 border-4 border-warning border-start">
+
+    <!-- HEADER start -->
     <h2 class="fw-bold mb-3">{{ article.title }}</h2>
     <div class="row justify-content-start">
-      <p class="col-12 col-md-4">Tags: <span class="fst-italic text-primary" *ngFor="let tag of article.tagList">#{{tag}} </span></p>
-      <p class="col-12 col-md-4">Created: <span class="fst-italic"> {{ article.created | date:"medium"}} </span></p>
+      <p class="col-12 col-md-4">
+        Tags:
+        <span
+        class="fst-italic text-primary"
+        *ngFor="let tag of article.tagList"
+          >#{{ tag }}
+        </span>
+      </p>
+      <p class="col-8 col-md-4">
+        Created:
+        <span class="fst-italic">
+          {{ article.created | date : "longDate" }}
+        </span>
+      </p>
+      <p class="col-4 col-md-4 text-end">
+        <i *ngIf="!user" class="fa fa-heart-o" aria-hidden="true"></i>
+        <i *ngIf="user"class="fa" [ngClass]="{ 'text-danger fa-heart': isFavourited, 'fa-heart-o' : !isFavourited }" aria-hidden="true" (click)="onFavourite()" style="cursor: pointer"></i>
+        {{ article.favoriteCount }}
+      </p>
     </div>
     <div>
-      <p class="fst-italic">{{article.description}}</p>
+      <p class="fst-italic">{{ article.description }}</p>
     </div>
-    <hr>
+    <hr />
+    <!-- HEADER end -->
+    <!-- BODY start -->
     <div *ngIf="editedArticleBody.length === 1" class="mt-5">
-      <p>{{article.body}}</p>
+      <p>{{ article.body }}</p>
     </div>
     <div *ngIf="editedArticleBody.length > 1" class="mt-5">
-      <p *ngFor="let par of editedArticleBody">{{par}}</p>
+      <p *ngFor="let par of editedArticleBody">{{ par }}</p>
+    </div>
+    <hr />
+    <!-- BODY end -->
+    <!-- COMMENTS start -->
+    <div>
+      <h6 class="fst-italic">Comments</h6>
+      <div class="row mb-3">
+        <div *ngIf="!article.comments.length" class="col-12 ms-3">No comments on this article yet.</div>
+        <small *ngIf="!user" class="col-12 text-end">Login to add comment!</small>
+        <div *ngIf="user" class="col-12 text-end">
+          <button class="btn btn-success" (click)="switchCommentForm()">Add comment</button>
+        </div>
+      </div>
+
+      <!-- COMMENT form -->
+      <div *ngIf="addCommentMode">
+        <form
+          #commentForm="ngForm"
+          (ngSubmit)="onSubmitComment(commentForm)"
+          class="row ms-2"
+        >
+          <div class="mt-2 col-md-9">
+            <input
+              type="text"
+              class="form-control"
+              id="commentBody"
+              ngModel
+              required
+              #commentBody="ngModel"
+              name="commentBody"
+              minlength="2"
+            />
+            <div class="text-danger" *ngIf="commentBody.invalid && commentBody.touched">
+              <small *ngIf="commentBody.errors?.['required']">Please add a commentBody!</small>
+              <small *ngIf="commentBody.errors?.['minlength']">Minimum length for comment is 2 characters.</small>
+            </div>
+          </div>
+          <div class="mt-2 col-md-3 text-center">
+            <button
+              type="submit"
+              class="btn btn-success"
+              [disabled]="commentForm.invalid"
+            ><i class="fa fa-plus-circle text-white" aria-hidden="true"></i></button>
+            <button
+            type="button"
+              class="btn btn-danger mx-3"
+              (click)="onCancelComment()"
+            ><i class="fa fa-ban text-white" aria-hidden="true"></i></button>
+          </div>
+        </form>
+      </div>
+
+      <!-- COMMENT details -->
+      <div *ngIf="article.comments.length" class="mt-4">
+        <div *ngFor="let comment of article.comments" class="row ms-1 ms-md-3">
+          <p class="col-9 fst-italic">"{{ comment.body }}"</p>
+          <small class="col-3 text-end fst-italic text-primary">by {{ user?.username === comment.author.username ? 'me' : comment.author.username}}
+            <span *ngIf="user && user!.username === comment.author.username">
+              <i class="fa fa-trash-o text-danger ms-1" style="cursor: pointer;" (click)="onDeleteComment(comment.id)" ></i>
+            </span>
+          </small>
+        </div>
+      </div>
     </div>
   </article>
   <div class="mt-3 text-center">
-    <button class="btn btn-outline-primary" routerLink="''">Back to Home</button>
+    <button class="btn btn-outline-primary" routerLink="''">
+      Back to Home
+    </button>
   </div>
 </section>
+
