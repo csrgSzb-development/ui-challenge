@@ -1,3 +1,8 @@
+<section *ngIf="isNoArticle" class="text-center text-primary mt-5">
+  <h3>It seems there are no articles...</h3>
+  <p>Sign up and you can be the first!</p>
+</section>
+
 <section *ngIf="articleList$" class="row my-3 p-3 justify-content-around">
   <article
     *ngFor="let article of articleList$ | async"

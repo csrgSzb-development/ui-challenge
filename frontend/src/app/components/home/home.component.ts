@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ArticlesRO, ArticlesRespData } from 'src/app/models/article';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { ArticleService } from 'src/app/services/article.service';
 import { LoggedInUserData } from 'src/app/models/logged-in-user-data';
 import { AuthService } from 'src/app/services/auth.service';
@@ -14,6 +14,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
+  isNoArticle: boolean = true;
   articleList$?: Observable<ArticlesRespData[]>;
   user?: LoggedInUserData;
   private userSubs?: Subscription;
@@ -30,6 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       {next: (data: LoggedInUserData) => this.user = data}
       );
     this.articleList$ = this.articleService.getAllArticles().pipe(
+      tap((data: ArticlesRO) => {if(data.articlesCount !== 0) this.isNoArticle = false}),
       map((data: ArticlesRO) => data.articles)
     )
   }
