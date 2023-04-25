@@ -29,7 +29,7 @@ describe('UserService', () => {
 
   describe('getUserInfo()', () => {
 
-      it('getUserInfo() should return user info', () => {
+      it('should return user info', () => {
         const userRO: UserRO = {
           user: {
             id: 1,
