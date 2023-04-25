@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
 import { ArticleRO, ArticleRespData } from 'src/app/models/article';
 import { CreateComment } from 'src/app/models/comment';
@@ -30,7 +29,6 @@ export class ArticleDetailsComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
     private router: Router,
-    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -43,19 +41,16 @@ export class ArticleDetailsComponent implements OnInit, OnDestroy {
         next: (data: ArticleRO) => {
           this.setArticleData(data.article);
         },
-        error: (err) => {
-          this.toastr.info('Error occurs', 'Oops');
-          this.router.navigate(['']);
-        }
+        error: (err) => this.router.navigate([''])
       })
     }
-  }
+  };
 
   ngOnDestroy(): void {
     if (this.userSubs) {
       this.userSubs.unsubscribe();
     }
-  }
+  };
 
   // Favorite function
 
@@ -66,13 +61,13 @@ export class ArticleDetailsComponent implements OnInit, OnDestroy {
       this.articleObsHandler(this.articleService.unFavoriteArticle(this.article!.slug));
     }
     this.isFavourited = !this.isFavourited;
-  }
+  };
 
   // Comment functions
 
   switchCommentForm() {
     this.addCommentMode = !this.addCommentMode;
-  }
+  };
 
   onSubmitComment(form: NgForm) {
     const newComment: CreateComment = { body: form.value.commentBody };
@@ -80,37 +75,34 @@ export class ArticleDetailsComponent implements OnInit, OnDestroy {
       this.articleObsHandler(this.articleService.saveComment(this.article!.slug, newComment));
     }
     this.onCancelComment();
-  }
+  };
 
   onCancelComment() {
     this.commentForm?.reset();
     this.switchCommentForm();
-  }
+  };
 
   onDeleteComment(commentId: number) {
     this.articleObsHandler(this.articleService.deleteComment(this.article!.slug, commentId));
-  }
+  };
 
   // Helper functions
 
   private setArticleData(article: ArticleRespData) {
     this.article = article;
     this.editedArticleBody = this.setArticleBody(this.article.body);
-  }
+  };
 
   private setArticleBody(body: string): string[] {
     return body.split('\n').filter(p => p.length > 0);
-  }
+  };
 
   private articleObsHandler(artObs$: Observable<ArticleRO>) {
     artObs$.subscribe({
       next: (data: ArticleRO) => {
         this.setArticleData(data.article);
-      },
-      error: (err) => {
-        this.toastr.info('Error occurs', 'Oops');
       }
     })
-  }
+  };
 
 }

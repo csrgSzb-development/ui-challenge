@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { ArticleData, ArticleRO } from 'src/app/models/article';
 import { CreateArticle } from 'src/app/models/create-article';
 import { ArticleService } from 'src/app/services/article.service';
@@ -28,7 +27,6 @@ export class ArticleFormComponent implements OnInit {
     private articleService: ArticleService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -56,10 +54,10 @@ export class ArticleFormComponent implements OnInit {
           this.onDeleteTag(0);
           data.article.tagList.forEach(tag => this.onAddTag(tag));
         },
-        error: (err) => this.toastr.error(`${err}`, 'Error during loading!'),
+        error: (err) =>  this.navigateToHome(),
       })
     }
-  }
+  };
 
   onSubmit(): void {
 
@@ -69,51 +67,45 @@ export class ArticleFormComponent implements OnInit {
 
     if (this.updateArticleSlug) {
       this.articleService.updateArticle(newArticle, this.updateArticleSlug).subscribe({
-        next: (data: ArticleRO) => {
-          this.toastr.info(`The article with \"${data.article.title}\" title was updated.`, 'Success!')
-          this.navigateToHome();
-        },
-        error: (err) => this.toastr.error(`${err}`, 'Error during save!')
+        error: (err) =>  this.navigateToHome(),
+        complete: () => this.navigateToHome(),
       })
     } else {
       this.articleService.saveArticle(newArticle).subscribe({
         next: (data: ArticleData ) => {
-          this.toastr.success(`Article with \"${data.title}\" title was saved.`, 'Success!')
           this.articleForm.reset();
           this.navigateToHome();
         },
-        error: (err) => {
-          this.toastr.error(`${err}`, 'Error during save!') }
+        error: (err) =>  this.navigateToHome(),
       })
     }
   };
 
   onCancel(): void {
     this.navigateToHome();
-  }
+  };
 
   onDelete() {
     if(confirm('Are you sure, that you want to delete this article?')) {
       this.articleService.deleteArticle(this.updateArticleSlug!).subscribe({
-        next: data => this.toastr.success(`Article was succesfully deleted!`, 'OK'),
         complete: () => this.navigateToHome()
       })
     }
-  }
+  };
 
   onAddTag(tag: string = '') {
     (this.tagList as FormArray).push(
       new FormControl(tag, [Validators.minLength(this.tagMinChar!), Validators.maxLength(this.tagMaxChar!), Validators.pattern(this.tagPattern!)]),
     );
-  }
+  };
 
   onDeleteTag(index: number) {
     (<FormArray>this.articleForm.get('tagList')).removeAt(index);
-  }
+  };
 
   private navigateToHome(): void {
     this.router.navigate(['']);
-  }
+  };
 
   get title() { return this.articleForm.get('title') };
   get description() { return this.articleForm.get('description') };
