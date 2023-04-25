@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { UserRO } from 'src/app/models/user';
+import { CreateUser } from 'src/app/models/create-user';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -22,8 +21,7 @@ export class SignUpFormComponent implements OnInit {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private router: Router,
-    private toastr: ToastrService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -38,13 +36,10 @@ export class SignUpFormComponent implements OnInit {
     })
   }
 
-  public saveUser(): void {
-    const newUser = this.userSignUpForm.value;
+  saveUser(): void {
+    const newUser: CreateUser = this.userSignUpForm.value;
 
     this.authService.createUser(newUser).subscribe({
-      next: (data: UserRO)  => {
-        this.toastr.success(`Registration was successfull!`, `Hello ${data.user.username}!`);
-      },
       complete: () => {
         this.userSignUpForm.reset();
         this.router.navigate(['']);

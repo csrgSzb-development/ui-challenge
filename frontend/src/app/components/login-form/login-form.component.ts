@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { LoginUser } from 'src/app/models/login-user';
-import { UserData, UserRO } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -25,9 +23,8 @@ export class LoginFormComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private toastr: ToastrService,
     private router: Router
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.passwordMinChar = this.userService.userDataConfig.passwordMinChar;
@@ -38,18 +35,14 @@ export class LoginFormComponent implements OnInit {
     })
   }
 
-  public loginUser() {
+  loginUser() {
     const loginDataObject: LoginUser = this.loginForm.value;
 
     this.authService.loginUser(loginDataObject).subscribe({
-      next: (data: UserRO) => {
-        this.toastr.success(`Welcome ${data.user.username}!`, 'Successfull login!');
-      },
       complete: () => {
         this.loginForm.reset();
         this.router.navigate(['']);
-      },
+      }
     })
   }
-
 }

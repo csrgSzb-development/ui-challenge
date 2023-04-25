@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { LoginUser } from '../models/login-user';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators'
 import { UserData, UserRO } from '../models/user';
 import { LoggedInUserData } from '../models/logged-in-user-data';
 import { CreateUser } from '../models/create-user';
+import { ErrorHandlerService } from './error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,14 +26,16 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private toastr: ToastrService,
+    private eHS: ErrorHandlerService
   ) { }
 
 
   createUser(newUser: CreateUser): Observable<UserRO>{
     return this.http.post<UserRO>(this.USERS_BASE_URL, newUser).pipe(
-      catchError(error => this.handleError(error, 'sign up')),
+      catchError(error => this.eHS.handleError(error, 'sign up')),
       tap((data: UserRO) => {
         if (data.user) {
+          this.toastr.success(`Registration was successfull!`, `Hello ${data.user.username}!`);
           this.handleAuthentication(data.user);
         }
       })
@@ -41,9 +44,10 @@ export class AuthService {
 
   loginUser(loginUserData: LoginUser): Observable<UserRO> {
     return this.http.post<UserRO>(this.LOGIN_URL, loginUserData).pipe(
-      catchError(error => this.handleError(error, 'login')),
+      catchError(error => this.eHS.handleError(error, 'login')),
       tap((data: UserRO) => {
         if (data.user) {
+          this.toastr.success(`Welcome ${data.user.username}!`, 'Successfull login!');
           this.handleAuthentication(data.user);
         }
       })
@@ -57,24 +61,6 @@ export class AuthService {
     this.__loggedInUser.next(loggedInUser);
   }
 
-  private handleError(errorRes: HttpErrorResponse, process: string) {
-    let errorsObject = errorRes.error.errors;
-    if(errorsObject){
-      let errorMessage = "Some problem occurs:";
-      for (const key in errorsObject) {
-        if (Object.prototype.hasOwnProperty.call(errorsObject, key)) {
-          errorMessage  += ` ${errorsObject[key]}`;
-        }
-      }
-      this.toastr.error(`${errorMessage}`, `Error during ${process}!`);
-    } else if (errorRes.error.message) {
-      this.toastr.error(`${errorRes.error.message}`, `Error during ${process}!`);
-    } else {
-      this.toastr.error(`An unknown error occurred.`, `Error during ${process}!`);
-    }
-    return throwError(errorRes)
-  }
-
 
   private clearUserData(): void {
     localStorage.removeItem('token');
@@ -85,7 +71,8 @@ export class AuthService {
   autoLogin(): void {
     const userData: LoggedInUserData = JSON.parse(localStorage.getItem('userData')!);
     const token = localStorage.getItem('token');
-    if (!userData && !token) {
+    if (!userData || !token) {
+      this.clearUserData();
       return;
     } else {
       this.__loggedInUser.next(userData);
