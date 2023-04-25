@@ -2,9 +2,12 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { UserData, UserRO } from '../models/user';
-import { Observable } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { UpdateUser } from '../models/update-user';
 import { TableConfig } from '../models/table-config';
+import { ErrorHandlerService } from './error-handler.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -35,33 +38,44 @@ export class UserService {
     passwordMaxChar: 10,
     bioMaxChar: 600,
     imagePattern: /^http[s]?:\/{2}[\w\.\/]+\.{1}jp[e]?g$/
-  }
-
+  };
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private eHS: ErrorHandlerService,
+    private toastr: ToastrService
   ) { }
 
   getUserInfo(): Observable<UserRO> {
-    return this.http.get<UserRO>(this.USER_BASE_URL);
+    return this.http.get<UserRO>(this.USER_BASE_URL).pipe(
+      catchError(error => this.eHS.handleError(error, 'fetch user data')),
+    );
   };
 
   updateUserInfo(userUpdateData: UpdateUser): Observable<UserRO> {
-    return this.http.put<UserRO>(this.USER_BASE_URL, userUpdateData);
+    return this.http.put<UserRO>(this.USER_BASE_URL, userUpdateData).pipe(
+      catchError(error => this.eHS.handleError(error, 'update')),
+      tap((data) => this.toastr.success(`Profile update was successfull!`, `OK`) )
+    );
   };
 
   getAllUsers(): Observable<UserData[]> {
-    return this.http.get<UserData[]>(this.USERS_BASE_URL);
+    return this.http.get<UserData[]>(this.USERS_BASE_URL).pipe(
+      catchError(error => this.eHS.handleError(error, 'fetch users\' data')),
+    );
   };
 
   deleteUser(email: string) {
-    return this.http.delete(`${this.USERS_BASE_URL}/${email}`);
-  }
+    return this.http.delete(`${this.USERS_BASE_URL}/${email}`).pipe(
+      catchError(error => this.eHS.handleError(error, 'delete user')),
+      tap((data) => this.toastr.success('User was successfully deleted!', 'OK') )
+    );
+  };
 
   get userTableConfig() {
     return this._userTableConfig;
-  }
+  };
   get userDataConfig() {
     return this._userDataConfig;
-  }
+  };
 }

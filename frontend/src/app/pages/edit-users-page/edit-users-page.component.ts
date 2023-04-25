@@ -37,20 +37,18 @@ export class EditUsersPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if(this.userSubs) {
+    if (this.userSubs) {
       this.userSubs.unsubscribe();
     };
   }
 
   deleteUser(userToDelete: UserData) {
-    if(userToDelete.email === this.loggedInUser?.email) {
+    if (userToDelete.email === this.loggedInUser?.email) {
       this.toastr.info('You can\'t delete yourself!', 'Ooops');
       return
     }
-    if(confirm(`Really delete ${userToDelete.username}?`)){
+    if (confirm(`Really delete ${userToDelete.username}?`)) {
       this.userService.deleteUser(userToDelete.email).subscribe({
-        next: () => {this.toastr.success('User was successfully deleted!', 'OK')},
-        error: (err) => { console.log(err) },
         complete: () => { this.setUsersList() }
       })
     }
@@ -59,10 +57,10 @@ export class EditUsersPageComponent implements OnInit, OnDestroy {
   private setUsersList() {
     this.userService.getAllUsers().subscribe({
       next: (data: UserData[]) => {
-        const newUserlist = data.map( user => {
+        const newUserlist = data.map(user => {
           const modUser = { ...user };
-          if(modUser.bio) {
-            modUser.bio = `${user.bio.slice(0,50)} ...`
+          if (modUser.bio) {
+            modUser.bio = `${user.bio.slice(0, 50)} ...`
           }
           return modUser;
         })

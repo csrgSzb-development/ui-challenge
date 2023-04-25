@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { take, tap } from 'rxjs/operators';
 import { UpdateUser } from 'src/app/models/update-user';
 import { UserRO } from 'src/app/models/user';
@@ -26,9 +25,8 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private router: Router,
-    private toastr: ToastrService
-    ) { }
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.bioMaxChar = this.userService.userDataConfig.bioMaxChar;
@@ -45,9 +43,9 @@ export class UserProfileComponent implements OnInit {
     this.userService.getUserInfo().pipe(
       take(1),
       tap((data: UserRO) => {
-        if(data) {
+        if (data) {
           this.updateUserData = {
-            image:  data.user.image ? data.user.image : '',
+            image: data.user.image ? data.user.image : '',
             email: data.user.email,
             bio: data.user.bio,
             username: data.user.username
@@ -71,25 +69,10 @@ export class UserProfileComponent implements OnInit {
     const updateUserData: UpdateUser = this.userUpdateForm.value;
 
     this.userService.updateUserInfo(updateUserData).subscribe({
-      next: (data)  => {
-        this.toastr.success(`Profile update was successfull!`, `OK`);
-      },
-      error: (error) => {
-        let errorsObject = error.error.errors;
-        if(errorsObject){
-          let errorMessage = "Some problem occurs:";
-          for (const key in errorsObject) {
-            if (Object.prototype.hasOwnProperty.call(errorsObject, key)) {
-              errorMessage  += ` ${errorsObject[key]}`;
-            }
-          }
-          this.toastr.error(`${errorMessage}`, 'Error during update!')
-        } else {
-          this.toastr.error(`${error.error.message}`, 'Error during update!')
-        }
+      error: (err) => {
+        this.router.navigate(['']);
       },
       complete: () => {
-        this.switchMode();
         this.authService.setLoggedInUser({ username: updateUserData.username, email: updateUserData.email });
         this.router.navigate(['']);
       }
