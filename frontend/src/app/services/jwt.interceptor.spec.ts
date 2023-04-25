@@ -36,7 +36,7 @@ describe('JwtInterceptor', () => {
     httpClient.get(url).subscribe();
 
     const req = httpMock.expectOne(url);
-    console.log(req.request.headers.has('authorization'));
+
     expect(req.request.headers.has('authorization')).toBe(true);
   });
 
@@ -45,7 +45,7 @@ describe('JwtInterceptor', () => {
     httpClient.get(url).subscribe();
 
     const req = httpMock.expectOne(url);
-    console.log(req.request.headers.has('authorization'));
+
     expect(req.request.headers.has('authorization')).toBeFalsy();
   });
 
