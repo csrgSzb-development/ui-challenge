@@ -27,87 +27,70 @@ describe('UserService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('getUserInfo()', () => {
-
-      it('should return user info', () => {
-        const userRO: UserRO = {
-          user: {
-            id: 1,
-            username: 'Joe Doe',
-            bio: '',
-            email: 'joedoe@mail.com',
-            token: 'sdfasfasdfaf423421',
-            image: ''
-          }
-        };
-        service.getUserInfo().subscribe((data) => {
-          expect(data).toEqual(userRO);
-        });
-        const req = httpMock.expectOne(`${environment.apiUrl}user`);
-        expect(req.request.method).toBe('GET');
-        req.flush(userRO);
-      });
-
-  })
-
-  describe('updateUserInfo()', () => {
-
-    it('should update user info', () => {
-      const userUpdateData: UpdateUser = {
-        username: 'Joe Billy Doe',
+  it('getUserInfo() should return user info', () => {
+    const userRO: UserRO = {
+      user: {
+        id: 1,
+        username: 'Joe Doe',
         bio: '',
         email: 'joedoe@mail.com',
+        token: 'sdfasfasdfaf423421',
         image: ''
-      };
-      const userRO: UserRO = {
-        user: {
-          id: 1,
-          username: 'newues',
-          bio: '',
-          email: 'joedoe@mail.com',
-          token: 'sdfasfasdfaf423421',
-          image: ''
-        }
-      };
-      service.updateUserInfo(userUpdateData).subscribe((data) => {
-        expect(data).toEqual(userRO);
-      });
-      const req = httpMock.expectOne(`${environment.apiUrl}user`);
-      expect(req.request.method).toBe('PUT');
-      req.flush(userRO);
+      }
+    };
+    service.getUserInfo().subscribe((data) => {
+      expect(data).toEqual(userRO);
     });
+    const req = httpMock.expectOne(`${environment.apiUrl}user`);
+    expect(req.request.method).toBe('GET');
+    req.flush(userRO);
+  });
 
-  })
-
-
-  describe('getAllUsers()', () => {
-
-      it('should return all users', () => {
-        const users: UserData[] = [
-          { id: 1, email: 'jd@test.com', username: 'John Doe', bio: '', token: 'asdfasdf', image: '' },
-          { id: 2, email: 'jad@test.com', username: 'Jane Doe', bio: '', token: 'asdfasdf', image: '' },
-        ];
-        service.getAllUsers().subscribe((data) => {
-          expect(data).toEqual(users);
-        });
-        const req = httpMock.expectOne(`${environment.apiUrl}users`);
-        expect(req.request.method).toBe('GET');
-        req.flush(users);
-      });
-
-  })
-
-  describe('deleteUser()', () => {
-
-    it('should delete user', () => {
-      const email = 'test@test.com';
-      service.deleteUser(email).subscribe();
-      const req = httpMock.expectOne(`${environment.apiUrl}users/${email}`);
-      expect(req.request.method).toBe('DELETE');
-      req.flush({});
+  it('updateUserInfo() should update user info', () => {
+    const userUpdateData: UpdateUser = {
+      username: 'Joe Billy Doe',
+      bio: '',
+      email: 'joedoe@mail.com',
+      image: ''
+    };
+    const userRO: UserRO = {
+      user: {
+        id: 1,
+        username: 'newues',
+        bio: '',
+        email: 'joedoe@mail.com',
+        token: 'sdfasfasdfaf423421',
+        image: ''
+      }
+    };
+    service.updateUserInfo(userUpdateData).subscribe((data) => {
+      expect(data).toEqual(userRO);
     });
+    const req = httpMock.expectOne(`${environment.apiUrl}user`);
+    expect(req.request.method).toBe('PUT');
+    req.flush(userRO);
+  });
 
-  })
+  it('getAllUsers() should return all users', () => {
+    const users: UserData[] = [
+      { id: 1, email: 'jd@test.com', username: 'John Doe', bio: '', token: 'asdfasdf', image: '' },
+      { id: 2, email: 'jad@test.com', username: 'Jane Doe', bio: '', token: 'asdfasdf', image: '' },
+    ];
+    service.getAllUsers().subscribe((data) => {
+      expect(data).toEqual(users);
+    });
+    const req = httpMock.expectOne(`${environment.apiUrl}users`);
+    expect(req.request.method).toBe('GET');
+    req.flush(users);
+  });
+
+  it('deleteUser() should delete user', () => {
+    const email = 'test@test.com';
+    service.deleteUser(email).subscribe();
+    const req = httpMock.expectOne(`${environment.apiUrl}users/${email}`);
+    expect(req.request.method).toBe('DELETE');
+    req.flush({});
+  });
 
   it('should return user table config', () => {
     const expectedTableConfig: TableConfig = {
